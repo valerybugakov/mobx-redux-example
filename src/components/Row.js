@@ -9,7 +9,7 @@ const Container = styled.div`
   grid-auto-rows: 25px;
 
   & > input {
-    min-width: 100px;
+    min-width: 150px;
     margin-right: 20px;
     font-size: 16px;
   }
