@@ -1,0 +1,16 @@
+{
+  "presets": [
+    ["env", { "modules": false }],
+    "react",
+  ],
+  "plugins": [
+    'styled-components',
+    "transform-decorators-legacy",
+    'transform-es2015-spread',
+    ['transform-object-rest-spread', {
+      useBuiltIns: true,
+    }],
+    'transform-class-properties',
+    "react-hot-loader/babel",
+  ]
+}
