@@ -26,9 +26,10 @@ export const unboxProps = (props) => {
   return unboxedProps
 }
 
+// inject :: (state, actions, props, context) -> props
 export default storeToProps => WrappedComponent => {
-  const applyStoreToProps = ({ store }, props, context) => (
-    storeToProps(store.getState(), props, context)
+  const applyStoreToProps = ({ store, actions }, props, context) => (
+    storeToProps(store.getState(), actions, props, context)
   )
 
   const InjectedComponent = inject(applyStoreToProps)(WrappedComponent)

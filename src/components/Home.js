@@ -1,8 +1,9 @@
 import React from 'react'
+import { compose } from 'ramda'
 import { observer } from 'mobx-react'
 import styled from 'styled-components'
 import { inject } from 'redux/utils'
-import { addRow } from 'redux/main/actions'
+import AnotherForm from './AnotherForm'
 import Filter from './Filter'
 import Row from './Row'
 
@@ -20,8 +21,9 @@ const AddButton = styled.button`
   font-size: 14px;
 `
 
-const Home = ({ rows, filters }) => (
+const Home = ({ rows, filters, addRow, toggleFilter }) => (
   <Container>
+    <AnotherForm />
     <div>
       Total rows: {rows.length}
       <AddButton onClick={addRow}>Add row</AddButton>
@@ -32,6 +34,7 @@ const Home = ({ rows, filters }) => (
         ['check1', 'check2', 'check3', 'check4'].map(filterName => (
           <Filter
             key={filterName}
+            onChange={toggleFilter}
             filterName={filterName}
             enabledFilters={filters}
           />
@@ -44,7 +47,12 @@ const Home = ({ rows, filters }) => (
   </Container>
 )
 
-export default inject(state => ({
-  rows: state.main.visibleRows,
-  filters: state.main.filters,
-}))(observer(Home))
+export default compose(
+  inject((state, { addRow, toggleFilter }) => ({
+    addRow,
+    toggleFilter,
+    filters: state.main.filters,
+    rows: state.main.visibleRows,
+  })),
+  observer,
+)(Home)

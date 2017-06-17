@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import { toggleFilter } from 'redux/main/actions'
 
 @observer
 export default class Filter extends Component {
-  onChange = () => toggleFilter({ name: this.props.filterName })
+  onChange = () => this.props.onChange({ name: this.props.filterName })
 
   render() {
     const { filterName, enabledFilters, className } = this.props

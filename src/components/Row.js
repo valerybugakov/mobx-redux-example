@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { inject } from 'redux/utils'
 import Field from './Field'
 
 const Container = styled.div`
@@ -8,20 +9,21 @@ const Container = styled.div`
   grid-template-columns: repeat(3, 2fr) repeat(4, 1fr);
   grid-auto-rows: 25px;
 
-  & > input {
+  & input {
     min-width: 150px;
     margin-right: 20px;
     font-size: 16px;
   }
 `
 
+@inject((_, { setField }) => ({ setField }))
 class Row extends Component {
   shouldComponentUpdate() {
     return false
   }
 
   render() {
-    const { row, className } = this.props
+    const { row, className, setField } = this.props
 
     return (
       <Container className={className}>
@@ -30,8 +32,9 @@ class Row extends Component {
             <Field
               key={name}
               name={name}
-              row={row}
+              data={row}
               Component="input"
+              onChange={setField}
             />
           ))
         }
@@ -40,9 +43,10 @@ class Row extends Component {
             <Field
               key={name}
               name={name}
-              row={row}
-              Component="input"
+              data={row}
               type="checkbox"
+              Component="input"
+              onChange={setField}
             />
           ))
         }

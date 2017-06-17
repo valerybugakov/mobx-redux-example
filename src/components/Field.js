@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
 import { observer } from 'mobx-react'
-import { setField } from 'redux/main/actions'
 
 @observer
 export default class Field extends Component {
   onChange = ({ target }) => {
-    const { row, name } = this.props
+    const { data, name, onChange } = this.props
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    setField({ id: row.id, name, value })
+    onChange({ id: data.id, name, value })
   }
 
   render() {
-    const { Component: FieldComponent, name, row, type } = this.props
-    const value = row[name]
+    const { Component: FieldComponent, name, data, type } = this.props
+    const value = data[name]
 
     return (
       <FieldComponent
