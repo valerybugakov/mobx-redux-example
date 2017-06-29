@@ -20,8 +20,11 @@ export default class Field extends Component {
       ...rest
     } = this.props
 
-                                            // for <AnotherForm /> compat
-    const value = data[`${name}Visible`] || data[name]
+    let value = data[`${name}Visible`]
+
+    if (typeof value === 'undefined') {
+      value = data[name] // for <AnotherForm /> compat
+    }
 
     return (
       <FieldComponent

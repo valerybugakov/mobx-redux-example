@@ -55,7 +55,7 @@ const initialState = observable({
     const { rows, filters } = this
 
     if (!filters.length) return rows
-    return rows.filter(row => filters.every(filter => row[filter]))
+    return rows.filter(row => filters.every(filter => row[`${filter}Visible`]))
   },
 })
 
