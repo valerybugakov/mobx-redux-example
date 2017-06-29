@@ -4,18 +4,28 @@ import { observer } from 'mobx-react'
 @observer
 export default class Field extends Component {
   onChange = ({ target }) => {
-    const { data, name, onChange } = this.props
+    const { data, name, onChange, variationId } = this.props
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    onChange({ id: data.id, name, value })
+    onChange({ id: data.id, name, value, variationId })
   }
 
   render() {
-    const { Component: FieldComponent, name, data, type } = this.props
-    const value = data[name]
+    const {
+      Component: FieldComponent,
+      name,
+      data,
+      type,
+      variationId,
+      ...rest
+    } = this.props
+
+                                            // for <AnotherForm /> compat
+    const value = data[`${name}Visible`] || data[name]
 
     return (
       <FieldComponent
+        {...rest}
         type={type}
         value={value}
         checked={value}

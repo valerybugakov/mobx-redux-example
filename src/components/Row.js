@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { inject } from 'redux/utils'
 import Field from './Field'
+import Variations from './Variations'
 
 const Container = styled.div`
   display: grid;
@@ -16,14 +17,34 @@ const Container = styled.div`
   }
 `
 
-@inject((_, { setField }) => ({ setField }))
+@inject((_, {
+  setField,
+  setVariationField,
+  addVariation,
+  applyChanges,
+  discardChanges,
+}) => ({
+  setField, setVariationField, addVariation, applyChanges, discardChanges,
+}))
 class Row extends Component {
   shouldComponentUpdate() {
     return false
   }
 
+  addVariation = () => this.props.addVariation({ id: this.props.row.id })
+  applyChanges =() => this.props.applyChanges({ id: this.props.row.id })
+  discardChanges =() => this.props.discardChanges({ id: this.props.row.id })
+
   render() {
-    const { row, className, setField } = this.props
+    const {
+      row,
+      setField,
+      className,
+      variationId,
+      setVariationField,
+    } = this.props
+
+    const isVariationRow = typeof variationId !== 'undefined'
 
     return (
       <Container className={className}>
@@ -34,7 +55,8 @@ class Row extends Component {
               name={name}
               data={row}
               Component="input"
-              onChange={setField}
+              variationId={variationId}
+              onChange={isVariationRow ? setVariationField : setField}
             />
           ))
         }
@@ -46,10 +68,23 @@ class Row extends Component {
               data={row}
               type="checkbox"
               Component="input"
-              onChange={setField}
+              variationId={variationId}
+              onChange={isVariationRow ? setVariationField : setField}
             />
           ))
         }
+        <Field
+          name="changesNumber"
+          data={row}
+          type="number"
+          Component="input"
+          disabled
+        />
+
+        <button onClick={this.addVariation}>Add variation</button>
+        <button onClick={this.applyChanges}>Apply changes</button>
+        <button onClick={this.discardChanges}>Discard changes</button>
+        {!isVariationRow && <Variations rowId={row.id} />}
       </Container>
     )
   }
